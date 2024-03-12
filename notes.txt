@@ -12,3 +12,4 @@ curly braces hold the objects -- {"firstName":"Anna", "lastName":"Smith"}
 square brackets hold arrays -- the entire thing 
 ok added
 bruhhh
+see that isnot how it done okokkokok
