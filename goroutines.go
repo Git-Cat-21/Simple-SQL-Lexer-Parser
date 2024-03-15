@@ -44,7 +44,7 @@ func senData(ch chan int) {
 // ch <- value send value to the channel
 // receivedVal := <-ch
 func main() {
-	ch := make(chan int)
+	ch := make(chan int)//unbuffered
 	go senData(ch)
 	// for num := range ch {
 	// 	fmt.Println("Received ", num)
