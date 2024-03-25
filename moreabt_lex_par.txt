@@ -1,0 +1,13 @@
+LEXER
+- Lexer AKA tokenizer is the inital stage of a parser. 
+- Primary function to break down a sequence of characters into smaller units called tokens.
+- These tokens are the fundamental building blocks that the parser will use to understand the structure and meaning of the input
+
+PARSER 
+- Takes the tokens produced by lexer and interprets the structure acc to the syntax rules
+- It arranges these tokens into a hierarchial structure called a aprse tree or Abstract Syntax Tree (AST)
+- AST represents the syntatic structure of the input
+- These errors indicate violations of the languages's syntax rules and report to the user
+
+THEY COLLECTIVELY FORM THE CORE COMPONENTS OF A TYPICAL COMPILER OR INTERPRETER
+

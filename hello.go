@@ -10,7 +10,7 @@
 // 		fmt.Println("ok cool that is nice")
 // 		break
 
-// 	case 1, 5:s
+// 	case 1, 5:
 // 		fmt.Println("hi how are you")
 // 	case 2:
 // 		fmt.Println("you say i am good")

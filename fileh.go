@@ -24,26 +24,26 @@ func main() {
 	fmt.Println(filecontent)
 }*/
 
-package main
+// package main
 
-import (
-	"fmt"
-	"os"
-)
+// import (
+// 	"fmt"
+// 	"os"
+// )
 
-func main() {
-	content := []byte("hello world!\n")
-	file, err := os.Create("output.txt")
-	if err != nil {
-		fmt.Println("Error creating a file", err)
-		return
-	}
-	defer file.Close()
-	_, err = file.Write(content)
-	if err != nil {
-		fmt.Println("Error writing to file", err)
-		return
-	}
-	fmt.Println("data written to file successfully!")
+// func main() {
+// 	content := []byte("hello world!\n")
+// 	file, err := os.Create("output.txt")
+// 	if err != nil {
+// 		fmt.Println("Error creating a file", err)
+// 		return
+// 	}
+// 	defer file.Close()
+// 	_, err = file.Write(content)
+// 	if err != nil {
+// 		fmt.Println("Error writing to file", err)
+// 		return
+// 	}
+// 	fmt.Println("data written to file successfully!")
 
-}
+// }
