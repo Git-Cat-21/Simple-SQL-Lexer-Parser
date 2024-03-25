@@ -83,7 +83,8 @@ func main() {
 }*/
 
 /*package main
-
+//this comes under the lazy evaluation please do consider uploading it on git it will be really helpful in tracking the errors and the people who have contributed to the code thanks a lot for asking i will get back to you
+//this for sure will turn out tp be a productive session i will gaurantee you of that :wink
 import "fmt"
 
 func add(a, b, c int) {
