@@ -17,6 +17,7 @@ const (
 	WhereKeyword  Keyword  = "WHERE"
 	AsteriskChar  Operator = '*'
 	SemicolonChar Operator = ';'
+	EqualstoChar  Operator = '='
 )
 
 type Token struct {
@@ -25,17 +26,24 @@ type Token struct {
 }
 
 func main() {
-	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Println("Enter the SQL query\n")
-	scanner.Scan()
-	input := scanner.Text()
-	fmt.Println("You entered the following SQL Query", input)
-	fmt.Println()
-	tokens := lexer(input)
-	fmt.Println("Tokens")
-	for _, token := range tokens {
-		fmt.Printf("%s: %s\n", token.Type, token.Value)
+
+	i := 0
+	for i < 10 {
+		scanner := bufio.NewScanner(os.Stdin)
+		fmt.Println("Enter the SQL query\n")
+		scanner.Scan()
+		input := scanner.Text()
+		fmt.Println("You entered the following SQL Query", input)
+		fmt.Println()
+		tokens := lexer(input)
+		fmt.Println("Tokens")
+		for _, token := range tokens {
+			fmt.Printf("%s: %s\n", token.Type, token.Value)
+		}
+		fmt.Println()
+		i++
 	}
+
 }
 
 func lexer(input string) []Token {
@@ -45,7 +53,7 @@ func lexer(input string) []Token {
 		switch word {
 		case string(SelectKeyword), string(FromKeyword), string(InsertKeyword), string(WhereKeyword):
 			tokens = append(tokens, Token{Type: "KEYWORD", Value: word})
-		case string(AsteriskChar), string(SemicolonChar):
+		case string(AsteriskChar), string(SemicolonChar), string(EqualstoChar):
 			tokens = append(tokens, Token{Type: "OPERATOR", Value: word})
 		default:
 			tokens = append(tokens, Token{Type: "IDENTIFIER", Value: word})
