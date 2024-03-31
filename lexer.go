@@ -2,18 +2,25 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
 )
 
 const (
-	JSON_QUOTE      = '"'
-	JSON_WHITESPACE = " \t\n\r"
-	JSON_SYNTAX     = "{}[],:"
-	trueString      = "true"
-	falseString     = "false"
-	nullString      = "null"
+	JSON_QUOTE        = '"'
+	JSON_WHITESPACE   = " \t\n\r"
+	JSON_SYNTAX       = "{}[],:"
+	trueString        = "true"
+	falseString       = "false"
+	nullString        = "null"
+	JSON_RIGHTBRACKET = "]"
+	JSON_RIGHTBRACE   = "}"
+	JSON_LEFTBRACKET  = "["
+	JSON_LEFTBRACE    = "{"
+	JSON_COMMA        = ","
+	JSON_COLON        = ":"
 )
 
 func main() {
@@ -23,12 +30,29 @@ func main() {
 	input := scanner.Text()
 	fmt.Println("You entered the following SQL Query", input)
 	fmt.Println()
+
 	tokens := lex(input)
+
 	//fmt.Println(tokens)
 	for _, ch := range tokens {
 		fmt.Printf("'%s', ", ch)
 	}
+	fmt.Println()
+	//parse(tokens)
+	var interfaceTokens []interface{}
+	for _, token := range tokens {
+		interfaceTokens = append(interfaceTokens, token)
+	}
 
+	result, remainingTokens, err := parse(interfaceTokens)
+
+	fmt.Println("Parsed result:", result)
+
+	fmt.Println("Remaining tokens:", remainingTokens)
+
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 }
 
 func lex(input string) []interface{} {
@@ -96,4 +120,85 @@ func lexNull(input string) (bool, string) {
 		return true, input[len(nullString):]
 	}
 	return false, input
+}
+
+func parse(tokens []interface{}) (interface{}, []interface{}, error) {
+	if len(tokens) == 0 {
+		return nil, nil, errors.New("Unexpected end of input")
+	}
+	t := tokens[0].(string) // Asserting type to string
+	if t == "[" {
+		return parseArray(tokens[1:])
+	} else if t == "{" {
+		return parseObject(tokens[1:])
+	}
+	return t, tokens[1:], nil
+}
+
+func parseArray(tokens []interface{}) ([]interface{}, []interface{}, error) {
+	var jsonArray []interface{}
+
+	if len(tokens) == 0 || tokens[0] == JSON_RIGHTBRACKET {
+		return jsonArray, tokens[1:], nil
+	}
+
+	for {
+		json, remainingTokens, err := parse(tokens)
+		if err != nil {
+			return nil, nil, err
+		}
+		jsonArray = append(jsonArray, json)
+
+		if len(remainingTokens) == 0 {
+			return nil, nil, errors.New("Expected end-of-array bracket")
+		}
+
+		if remainingTokens[0] == JSON_RIGHTBRACKET {
+			return jsonArray, remainingTokens[1:], nil
+		} else if remainingTokens[0] != JSON_COMMA {
+			return nil, nil, errors.New("Expected comma after object in array")
+		}
+
+		tokens = remainingTokens[1:]
+	}
+}
+
+func parseObject(tokens []interface{}) (map[string]interface{}, []interface{}, error) {
+	jsonObject := make(map[string]interface{})
+
+	if len(tokens) == 0 || tokens[0] == JSON_RIGHTBRACE {
+		return jsonObject, tokens[1:], nil
+	}
+
+	for {
+		if len(tokens) == 0 {
+			return nil, nil, errors.New("Unexpected end of input")
+		}
+
+		jsonKey := tokens[0].(string)
+		tokens = tokens[1:]
+
+		if len(tokens) == 0 || tokens[0].(string) != JSON_COLON {
+			return nil, nil, errors.New("Expected colon after key in object")
+		}
+		tokens = tokens[1:]
+
+		jsonValue, remainingTokens, err := parse(tokens)
+		if err != nil {
+			return nil, nil, err
+		}
+		jsonObject[jsonKey] = jsonValue
+
+		if len(remainingTokens) == 0 {
+			return nil, nil, errors.New("Expected end-of-object brace")
+		}
+
+		if remainingTokens[0].(string) == JSON_RIGHTBRACE {
+			return jsonObject, remainingTokens[1:], nil
+		} else if remainingTokens[0].(string) != JSON_COMMA {
+			return nil, nil, errors.New("Expected comma after pair in object")
+		}
+
+		tokens = remainingTokens[1:]
+	}
 }
