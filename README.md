@@ -1,4 +1,5 @@
 # WEEK 1 
+-------
 ## GOLANG
 1. **Simplicity and Readability** > Go's syntax is clean and easy to understand
 2. **Support for concurrency** >  Go has built-in support for concurrency through go routines and channels.
@@ -9,6 +10,7 @@
 ----------
 ----------
 # WEEK 2
+-------
 ## LEXER AND PARSER
 ### They collectively form the core components of the typical compiler and interpreter 
 1. **LEXER**  
