@@ -8,7 +8,7 @@
 ----------
 ----------
 ----------
-# WEEK2
+# WEEK 2
 ## LEXER AND PARSER
 ### They collectively form the core components of the typical compiler and interpreter 
 1. **LEXER**  
