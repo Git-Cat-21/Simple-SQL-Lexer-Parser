@@ -4,10 +4,6 @@
 1. **Simplicity and Readability** > Go's syntax is clean and easy to understand
 2. **Support for concurrency** >  Go has built-in support for concurrency through go routines and channels.
 3. **Static Typing** > Type checking is performed at compile-time
-
-
-----------
-----------
 ----------
 # WEEK 2
 -------
@@ -21,6 +17,4 @@
     - It arranges these tokens into a **hierarchial structure** called the ***Abstract Syntax Tree*** (AST)
     - AST represents the syntatic structure of the input
     - Parser is **responsible to indicate violations** of the langauges's syntax rules and report to the user
----------
----------
 ---------
