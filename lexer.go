@@ -25,20 +25,16 @@ const (
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Println("Enter the SQL query\n")
+	fmt.Println("Enter the JSON Object\n")
 	scanner.Scan()
 	input := scanner.Text()
-	fmt.Println("You entered the following SQL Query", input)
+	fmt.Println("You entered the following JSON Object", input)
 	fmt.Println()
-
 	tokens := lex(input)
-
-	//fmt.Println(tokens)
 	for _, ch := range tokens {
 		fmt.Printf("'%s', ", ch)
 	}
 	fmt.Println()
-	//parse(tokens)
 	var interfaceTokens []interface{}
 	for _, token := range tokens {
 		interfaceTokens = append(interfaceTokens, token)
@@ -126,7 +122,7 @@ func parse(tokens []interface{}) (interface{}, []interface{}, error) {
 	if len(tokens) == 0 {
 		return nil, nil, errors.New("Unexpected end of input")
 	}
-	t := tokens[0].(string) // Asserting type to string
+	t := tokens[0].(string)
 	if t == "[" {
 		return parseArray(tokens[1:])
 	} else if t == "{" {
