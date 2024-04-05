@@ -6,6 +6,7 @@
 3. **Simplicity and Readability** > Go's syntax is clean and easy to understand
 4. **Support for concurrency** >  Go has built-in support for concurrency through go routines and channels.
 5. **Static Typing** > Type checking is performed at compile-time
+6. **Performance** > Its compilation to machine code makes it fast,  This makes it suitable for building high-performance applications, including web servers and distributed systems.
 ----------
 # WEEK 2
 -------
