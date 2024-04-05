@@ -9,7 +9,7 @@ PARSER
 - AST represents the syntatic structure of the input
 - These errors indicate violations of the languages's syntax rules and report to the user
 
-THEY COLLECTIVELY FORM THE CORE COMPONENTS OF A TYPICAL COMPILER OR INTERPRETER
+THEY COLLECTIVELY FORM THE CORE COMPONENTS OF A TYPICAL COMPILER OR INTERPRETER.  
 
 
 
