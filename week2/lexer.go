@@ -25,7 +25,7 @@ const (
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Println("Enter the JSON Object\n")
+	fmt.Println("Enter the JSON Object")
 	scanner.Scan()
 	input := scanner.Text()
 	fmt.Println("You entered the following JSON Object", input)
