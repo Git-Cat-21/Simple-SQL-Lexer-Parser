@@ -37,7 +37,7 @@ func lexer(input string) []Token {
 
 	for i := 0; i < len(input); i++ {
 		char := input[i]
-		// Handle whitespace
+
 		if unicode.IsSpace(rune(char)) {
 			if current != "" {
 				tokens = appendToken(tokens, current)
