@@ -21,3 +21,22 @@
     - AST represents the syntatic structure of the input.
     - Parser is **responsible to indicate violations** of the langauges's syntax rules and report to the user
 ---------
+# WEEK 3
+## SQL LEXER-PARSER 
+--------
+1. **Main Function**
+    - Prompts the user to enter a simple SQL query.
+    - Calls the *lexer* function ***to tokenize the input***.
+    - Prints the individual tokens.
+    - Calls the ***parseSelectStatement*** function to **parse the SQL** Query.
+2. **Lexer Function**
+    - Iterates through the input string character by character.
+    - Collects the characters into a current string until it encounter a whitespace character.
+    - When a whitespace character is encountered, it ***appends the current string as a token to the tokens slice***.
+    - The *appendToken* function is used ***to determine the type of Token*** and then add it to the tokens slice.
+3. **ParseSelectStatement Function**
+    - ***Iterates*** through the tokens and ***Initilizes the SelectStatment struct to store the parsed information***.
+    - If the *token type* is ***not recognized***, it returns an *error*.
+
+   
+
