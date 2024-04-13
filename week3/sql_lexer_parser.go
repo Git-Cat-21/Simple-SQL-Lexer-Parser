@@ -8,18 +8,20 @@ import (
 	"unicode"
 )
 
-type Token interface{}
-
 type Keyword string
 type Symbol rune
 
 const (
-	SelectKeyword Keyword = "SELECT"
-	FromKeyword   Keyword = "FROM"
-	SemicolonChar Symbol  = ';'
-	AsteriskChar  Symbol  = '*'
-	Whitespace            = " \t"
+	SelectKeyword   Keyword = "SELECT"
+	FromKeyword     Keyword = "FROM"
+	AsteriskSymbol  Symbol  = '*'
+	SemicolonSymbol Symbol  = ';'
 )
+
+type Token struct {
+	Type  string
+	Value string
+}
 
 func main() {
 	fmt.Println("Enter the SQL Query:")
@@ -27,8 +29,11 @@ func main() {
 	scanner.Scan()
 	input := scanner.Text()
 	fmt.Println("You entered the following SQL Query:", input)
+	fmt.Println()
 	tokens := lexer(input)
-	fmt.Println(tokens)
+	for _, token := range tokens {
+		fmt.Println(token)
+	}
 }
 
 func lexer(input string) []Token {
@@ -37,7 +42,6 @@ func lexer(input string) []Token {
 
 	for i := 0; i < len(input); i++ {
 		char := input[i]
-
 		if unicode.IsSpace(rune(char)) {
 			if current != "" {
 				tokens = appendToken(tokens, current)
@@ -45,7 +49,6 @@ func lexer(input string) []Token {
 			}
 			continue
 		}
-
 		current += string(char)
 	}
 
@@ -59,27 +62,28 @@ func lexer(input string) []Token {
 func appendToken(tokens []Token, value string) []Token {
 	value = strings.TrimSpace(value)
 	if isKeyword(value) {
-		tokens = append(tokens, Keyword(value))
+		return append(tokens, Token{Type: "Keyword", Value: value})
 	} else if isSymbol(rune(value[0])) {
-		tokens = append(tokens, value)
+		return append(tokens, Token{Type: "Symbol", Value: value})
 	} else {
-		tokens = append(tokens, value)
+		return append(tokens, Token{Type: "Identifier", Value: value})
 	}
-	return tokens
 }
 
 func isKeyword(token string) bool {
 	switch strings.ToUpper(token) {
 	case string(SelectKeyword), string(FromKeyword):
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 func isSymbol(char rune) bool {
 	switch char {
-	case ';', '*':
+	case rune(AsteriskSymbol), rune(SemicolonSymbol):
 		return true
+	default:
+		return false
 	}
-	return false
 }
