@@ -22,6 +22,11 @@ type Token struct {
 	Type  string
 	Value string
 }
+type SelectStatement struct {
+	AllColumns bool
+	Columns    []string
+	Table      string
+}
 
 func main() {
 	fmt.Println("Enter the SQL Query:")
@@ -34,6 +39,13 @@ func main() {
 	for _, token := range tokens {
 		fmt.Println(token)
 	}
+	statement, err := parseSelectStatement(lexer(input))
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Printf("SELECT %s FROM %s;\n", strings.Join(statement.Columns, ","), statement.Table)
+	fmt.Println("Parsed the statement successfully")
 }
 
 func lexer(input string) []Token {
@@ -86,4 +98,50 @@ func isSymbol(char rune) bool {
 	default:
 		return false
 	}
+}
+
+func parseSelectStatement(tokens []Token) (*SelectStatement, error) {
+	var statement SelectStatement
+	var inSelectColumns bool
+	var seenFrom bool
+
+	for _, token := range tokens {
+		switch token.Type {
+		case "Keyword":
+			if token.Value == "SELECT" {
+				inSelectColumns = true
+			} else if token.Value == "FROM" {
+				inSelectColumns = false
+				seenFrom = true
+			} else {
+				return nil, fmt.Errorf("unexpected keyword: %s", token.Value)
+			}
+		case "Identifier":
+			if inSelectColumns {
+				statement.Columns = append(statement.Columns, token.Value)
+			} else if seenFrom {
+				statement.Table = token.Value
+			} else {
+				return nil, fmt.Errorf("unexpected identifier: %s", token.Value)
+			}
+		case "Symbol":
+			if token.Value == "*" {
+				if len(statement.Columns) > 0 {
+					return nil, fmt.Errorf("cannot mix * with column names")
+				}
+				statement.AllColumns = true
+			} else if token.Value == ";" {
+				if len(statement.Columns) == 0 && !statement.AllColumns || statement.Table == "" {
+					return nil, fmt.Errorf("incomplete SQL statement")
+				}
+				return &statement, nil
+			} else {
+				return nil, fmt.Errorf("unexpected symbol: %s", token.Value)
+			}
+		default:
+			return nil, fmt.Errorf("unexpected token type: %s", token.Type)
+		}
+	}
+
+	return nil, fmt.Errorf("incomplete SQL statement")
 }
