@@ -14,6 +14,7 @@
 // 		fmt.Println("hi how are you")
 // 	case 2:
 // 		fmt.Println("you say i am good")
+		fmt.Println("Hello world")
 // 	default:
 // 		fmt.Println("umm yea deafault none")
 
